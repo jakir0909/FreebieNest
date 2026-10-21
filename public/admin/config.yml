@@ -3,6 +3,7 @@ backend:
   repo: jakir0909/FreebieNest
   branch: main
   base_url: https://freebienest.linkt.workers.dev
+  auth_endpoint: auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
