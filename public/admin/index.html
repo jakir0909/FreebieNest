@@ -4,27 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <!-- 👇 Chrome-এর অটো-ট্রান্সলেট বন্ধ করবে, যাতে পেজ ক্র্যাশ না করে -->
   <meta name="google" content="notranslate" />
   <title>Admin Panel | FreebieNest</title>
 </head>
 <body>
-  <!-- Decap CMS মূল স্ক্রিপ্ট -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
-
-  <!-- সম্পূর্ণ কনফিগারেশন -->
   <script>
     window.CMS_MANUAL_INIT = true;
-    
     const config = {
-      // 👇 config.yml ফাইল আর খুঁজবে না
-      load_config_file: false, 
+      load_config_file: false,
       backend: {
         name: 'github',
         repo: 'jakir0909/FreebieNest',
         branch: 'main',
-        // 👇 আপনার Cloudflare Worker এর লিংক
-        base_url: 'https://freebienest.linkt.workers.dev' 
+        base_url: 'https://freebienest.linkt.workers.dev'
       },
       media_folder: 'public/uploads',
       public_folder: '/uploads',
@@ -67,8 +60,6 @@
         }
       ]
     };
-
-    // CMS চালু করা
     const CMS = window.CMS || {};
     CMS.init({ config });
   </script>
