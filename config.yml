@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: your-github-username/your-repo-name          # 👈 ১. আপনার GitHub ইউজারনেম/রিপো
+  repo: jakir0909/FreebieNest          # 👈 ১. আপনার GitHub ইউজারনেম/রিপো
   branch: main                                        # 👈 ২. main না master চেক করুন
   base_url: https://your-worker.workers.dev           # 👈 ৩. Cloudflare Worker URL
   # auth_endpoint: /auth
