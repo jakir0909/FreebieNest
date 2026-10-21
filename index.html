@@ -4,16 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
+  <!-- 👇 এই লাইনটি Chrome-এর অটো-ট্রান্সলেট বন্ধ করবে -->
+  <meta name="google" content="notranslate" />
   <title>Content Manager | Freebies Hub</title>
 </head>
 <body>
   <!-- Decap CMS Script -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
 
-  <!-- Config inside HTML (No more config.yml needed) -->
+  <!-- Config inside HTML -->
   <script>
     window.CMS_MANUAL_INIT = true;
     const config = {
+      // 👇 এই লাইনটি যোগ করলে CMS আর config.yml ফাইল খুঁজবে না
+      load_config_file: false, 
       backend: {
         name: 'github',
         repo: 'jakir0909/FreebieNest',
