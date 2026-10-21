@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: jakir0909/FreebieNest
+  branch: main
+  base_url: https://freebienest.linkt.workers.dev
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: https://freebienest.pages.dev
+
+collections:
+  - name: "planners"
+    label: "Digital Planners"
+    folder: "src/content/planners"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Download URL", name: "fileUrl", widget: "string" }
+      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
+
+  - name: "prompts"
+    label: "AI Prompt Packs"
+    folder: "src/content/prompts"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Prompts", name: "prompts", widget: "list" }
+      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
