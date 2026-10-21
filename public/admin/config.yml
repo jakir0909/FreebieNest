@@ -1,9 +1,13 @@
+
 backend:
-  name: github
+  name: git-gateway
   repo: jakir0909/FreebieNest
   branch: main
-  base_url: https://freebienest.linkt.workers.dev
-  auth_endpoint: auth
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/557aa935-eccc-4cad-b3ec-d90dd984bfb4/pkce
+  auth_token_endpoint: /sites/557aa935-eccc-4cad-b3ec-d90dd984bfb4/token
+  gateway_url: https://gateway.decapbridge.com
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
@@ -12,21 +16,32 @@ site_url: https://freebienest.pages.dev
 
 collections:
   - name: "planners"
-    label: "Digital Planners"
+    label: "📋 Digital Planners"
+    label_singular: "Planner"
     folder: "src/content/planners"
     create: true
+    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Download URL", name: "fileUrl", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["Daily/Weekly", "Content Calendar", "Budget/Habit", "Freelance/Study", "Other"] }
       - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
+      - { label: "File Type", name: "fileType", widget: "select", options: ["PDF", "Notion Template", "Google Sheets", "Other"] }
+      - { label: "Download URL", name: "fileUrl", widget: "string" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
 
   - name: "prompts"
-    label: "AI Prompt Packs"
+    label: "🤖 AI Prompt Packs"
+    label_singular: "Prompt Pack"
     folder: "src/content/prompts"
     create: true
+    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Prompts", name: "prompts", widget: "list" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["Content Writing", "Image/Midjourney", "Business", "Coding", "Study", "Other"] }
       - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
+      - { label: "Prompts", name: "prompts", widget: "list" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
