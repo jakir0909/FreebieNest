@@ -1,0 +1,71 @@
+backend:
+  name: github
+  repo: your-github-username/your-repo-name          # 👈 ১. আপনার GitHub ইউজারনেম/রিপো
+  branch: main                                        # 👈 ২. main না master চেক করুন
+  base_url: https://your-worker.workers.dev           # 👈 ৩. Cloudflare Worker URL
+  # auth_endpoint: /auth
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: https://your-site.pages.dev                 # 👈 ৪. আপনার Cloudflare Pages URL
+
+collections:
+  - name: "planners"
+    label: "📋 Digital Planners"
+    label_singular: "Planner"
+    folder: "src/content/planners"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Daily/Weekly"
+          - "Content Calendar"
+          - "Budget/Habit"
+          - "Freelance/Study"
+          - "Other"
+      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
+      - label: "File Type"
+        name: "fileType"
+        widget: "select"
+        options:
+          - "PDF"
+          - "Notion Template"
+          - "Google Sheets"
+          - "Other"
+      - { label: "Download URL", name: "fileUrl", widget: "string",
+          hint: "R2 বা অন্য কোথাও হোস্ট করা ফাইলের লিংক" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
+
+  - name: "prompts"
+    label: "🤖 AI Prompt Packs"
+    label_singular: "Prompt Pack"
+    folder: "src/content/prompts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Content Writing"
+          - "Image/Midjourney"
+          - "Business"
+          - "Coding"
+          - "Study"
+          - "Other"
+      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
+      - label: "Prompts"
+        name: "prompts"
+        widget: "list"
+        hint: "প্রতিটি প্রম্পট আলাদা আইটেম হিসেবে যোগ করুন"
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }

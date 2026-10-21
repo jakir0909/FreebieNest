@@ -1,0 +1,8 @@
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* হেডার রঙ */
+[class*="AppHeader"] {
+  background-color: #1e40af !important;
+}
