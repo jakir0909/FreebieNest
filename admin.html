@@ -3,34 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreebieNest - Admin Panel</title>
+    <title>FreebieNest - Free Photos & AI Prompts</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-    
-    <!-- Login Screen -->
-    <div id="loginScreen" class="flex justify-center items-center h-screen">
-        <div class="bg-white p-8 rounded-xl shadow-md w-96">
-            <h2 class="text-2xl font-bold mb-4 text-indigo-600 text-center"><i class="fa-solid fa-lock"></i> Admin Login</h2>
-            <p class="text-xs text-gray-500 mb-4 text-center">Default Password: <b>admin123</b></p>
-            <input type="password" id="adminPassword" placeholder="Enter Password" class="w-full border px-4 py-2 rounded mb-4 focus:outline-none focus:border-indigo-600">
-            <button onclick="loginAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold hover:bg-indigo-700 transition">Login</button>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" onclick="switchView('home')" class="text-2xl font-black text-indigo-600 flex items-center gap-2">
+                <i class="fa-solid fa-box-archive"></i> FreebieNest
+            </a>
+            <div class="flex items-center gap-3">
+                <button onclick="switchView('home')" class="text-sm font-semibold text-gray-700 hover:text-indigo-600">Home</button>
+                <button onclick="checkAdminAccess()" class="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-indigo-100 transition"><i class="fa-solid fa-user-gear"></i> Admin Panel</button>
+            </div>
         </div>
+    </header>
+
+    <!-- HOME VIEW -->
+    <div id="homeView">
+        <section class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white py-12 px-4 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Discover & Download Freebies Instantly</h1>
+                <p class="text-indigo-100 text-lg mb-6">কোনো সাইন-আপ ছাড়াই ডাউনলোড করুন প্রিমিয়াম ফটো এবং এআই প্রম্পট টেমপ্লেট।</p>
+                <input type="text" id="searchInput" placeholder="Search prompts or photos..." class="px-4 py-3 rounded-lg text-gray-800 w-full sm:w-96 focus:outline-none">
+            </div>
+        </section>
+
+        <main class="max-w-7xl mx-auto px-4 py-10">
+            <div id="freebieGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Loaded dynamically -->
+            </div>
+        </main>
     </div>
 
-    <!-- Admin Dashboard -->
-    <div id="adminDashboard" class="hidden min-h-screen">
-        <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-indigo-600"><i class="fa-solid fa-gauge"></i> FreebieNest Admin Panel</h1>
-            <button onclick="logoutAdmin()" class="text-red-500 font-semibold text-sm hover:underline"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-        </header>
+    <!-- ADMIN PANEL VIEW -->
+    <div id="adminView" class="hidden max-w-6xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h2 class="text-2xl font-bold text-indigo-600"><i class="fa-solid fa-gauge"></i> Admin Dashboard</h2>
+            <button onclick="switchView('home')" class="bg-gray-200 px-4 py-2 rounded text-sm font-semibold">Exit to Site</button>
+        </div>
 
-        <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Add Item Form -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Add/Edit Form -->
             <div class="bg-white p-6 rounded-xl shadow-sm border md:col-span-1">
-                <h2 class="font-bold text-lg mb-4 text-gray-700">Add New Freebie</h2>
-                <form id="addForm" onsubmit="addItem(event)" class="space-y-3">
+                <h3 id="formTitle" class="font-bold text-lg mb-4 text-gray-700">Add New Post</h3>
+                <form id="postForm" onsubmit="handlePostSubmit(event)" class="space-y-3">
+                    <input type="hidden" id="editPostId">
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1">Title</label>
                         <input type="text" id="itemTitle" required class="w-full border px-3 py-2 rounded text-sm focus:outline-none">
@@ -55,133 +76,339 @@
                         <textarea id="itemDesc" rows="2" required class="w-full border px-3 py-2 rounded text-sm focus:outline-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1">Prompt Text (if applicable)</label>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Prompt Text (if any)</label>
                         <textarea id="itemPromptText" rows="2" class="w-full border px-3 py-2 rounded text-sm focus:outline-none"></textarea>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1">Download URL</label>
-                        <input type="text" id="itemDownloadUrl" placeholder="https://..." required class="w-full border px-3 py-2 rounded text-sm focus:outline-none">
+                        <input type="url" id="itemDownloadUrl" placeholder="https://..." required class="w-full border px-3 py-2 rounded text-sm focus:outline-none">
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-2.5 rounded font-semibold hover:bg-indigo-700 transition">Add Item</button>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Number of Ads to Show on Download</label>
+                        <input type="number" id="itemAdCount" value="1" min="0" max="5" required class="w-full border px-3 py-2 rounded text-sm focus:outline-none">
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-2.5 rounded font-semibold hover:bg-indigo-700 transition">Publish Instantly</button>
+                    <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden w-full bg-gray-400 text-white py-1.5 rounded text-xs">Cancel Edit</button>
                 </form>
             </div>
 
-            <!-- Manage Items List -->
+            <!-- Manage Posts List -->
             <div class="bg-white p-6 rounded-xl shadow-sm border md:col-span-2">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="font-bold text-lg text-gray-700">Manage Freebies</h2>
-                    <button onclick="exportJSON()" class="bg-green-600 text-white text-xs px-3 py-2 rounded font-semibold hover:bg-green-700 transition"><i class="fa-solid fa-download"></i> Export freebies.json</button>
-                </div>
+                <h3 class="font-bold text-lg mb-4 text-gray-700">Manage Posts</h3>
                 <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b bg-gray-50 text-xs text-gray-500">
                                 <th class="p-3">Image</th>
                                 <th class="p-3">Title</th>
-                                <th class="p-3">Type</th>
-                                <th class="p-3">Action</th>
+                                <th class="p-3">Ads</th>
+                                <th class="p-3">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="adminItemList">
-                            <!-- Populated via JS -->
-                        </tbody>
+                        <tbody id="adminPostList"></tbody>
                     </table>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
+    <!-- Modal for Details, Comments & Multi-Ad Download -->
+    <div id="detailModal" class="fixed inset-0 bg-black/60 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t py-6 text-center text-gray-500 text-sm mt-10">
+        &copy; 2026 FreebieNest. All rights reserved. Powered by GitHub & Cloudflare.
+    </footer>
+
+    <!-- App Logic Script -->
     <script>
-        let freebies = JSON.parse(localStorage.getItem('fn_freebies')) || [
-            {
-                id: 1,
-                title: "Cyberpunk City AI Prompt & Stock Photo",
-                type: "prompt",
-                category: "AI Prompts",
-                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=60",
-                description: "A detailed Midjourney/ChatGPT prompt to generate futuristic cyberpunk cityscapes at night.",
-                promptText: "A hyper-realistic cyberpunk city at night, neon lights reflecting on wet streets, cinematic lighting, 8k resolution, Unreal Engine 5 render --ar 16:9",
-                downloadUrl: "#"
-            },
-            {
-                id: 2,
-                title: "Minimalist Landscape Photography",
-                type: "photo",
-                category: "Photos",
-                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=60",
-                description: "High-resolution tropical beach landscape photo, perfect for blogs and wallpapers.",
-                promptText: "",
-                downloadUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?force=true"
-            }
-        ];
+        const API_URL = 'https://your-cloudflare-worker-subdomain.workers.dev'; // আপনার ক্লাউডফ্লেয়ার ওয়ার্কার ইউআরএল এখানে বসাবেন
+        let posts = [];
 
-        function loginAdmin() {
-            const pass = document.getElementById('adminPassword').value;
-            if(pass === 'admin123') { // পাসওয়ার্ড এখানে পরিবর্তন করতে পারেন
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                renderAdminList();
+        async function fetchPosts() {
+            try {
+                const res = await fetch(`${API_URL}/api/posts`);
+                posts = await res.json();
+                renderGrid(posts);
+                if(document.getElementById('adminView').classList.contains('flex') || document.getElementById('adminView').style.display === 'block') {
+                    renderAdminTable();
+                }
+            } catch(e) {
+                console.error('Error fetching posts:', e);
+            }
+        }
+
+        function switchView(view) {
+            if(view === 'home') {
+                document.getElementById('homeView').classList.remove('hidden');
+                document.getElementById('adminView').classList.add('hidden');
+                fetchPosts();
             } else {
-                alert('Wrong Password!');
+                document.getElementById('homeView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+                document.getElementById('adminView').style.display = 'block';
+                renderAdminTable();
             }
         }
 
-        function logoutAdmin() {
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
+        function checkAdminAccess() {
+            const pass = prompt("Enter Admin Password:");
+            if(pass === "admin123") { // পাসওয়ার্ড নিজের মতো পরিবর্তন করতে পারেন
+                switchView('admin');
+            } else if(pass !== null) {
+                alert("Wrong password!");
+            }
         }
 
-        function renderAdminList() {
-            const list = document.getElementById('adminItemList');
+        function renderGrid(items) {
+            const grid = document.getElementById('freebieGrid');
+            grid.innerHTML = '';
+            if(!items.length) {
+                grid.innerHTML = '<p class="col-span-3 text-center text-gray-500 py-10">No freebies available right now.</p>';
+                return;
+            }
+            items.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-medium">${item.category}</span>
+                                <h3 class="font-bold text-lg mt-2 text-gray-800">${item.title}</h3>
+                                <p class="text-gray-500 text-sm mt-1 line-clamp-2">${item.description}</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0 flex justify-between items-center border-t border-gray-100 mt-4 pt-3">
+                            <button onclick="openModal(${item.id})" class="text-indigo-600 font-semibold text-sm hover:underline">View & Download</button>
+                            <button onclick="shareItem('${item.title}')" class="text-gray-400 hover:text-indigo-600"><i class="fa-solid fa-share-nodes"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Modal & Multi-Ad Download Logic
+        async function openModal(id) {
+            const item = posts.find(i => i.id === id);
+            let comments = [];
+            try {
+                const res = await fetch(`${API_URL}/api/comments?post_id=${id}`);
+                comments = await res.json();
+            } catch(e) {}
+
+            let modalHTML = `
+                <img src="${item.image}" alt="${item.title}" class="w-full h-64 object-cover rounded-lg mb-4">
+                <span class="text-xs bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded font-medium">${item.category}</span>
+                <h2 class="text-2xl font-bold mt-2 text-gray-800">${item.title}</h2>
+                <p class="text-gray-600 mt-2">${item.description}</p>
+            `;
+
+            if(item.prompt_text) {
+                modalHTML += `
+                    <div class="mt-4 bg-gray-50 p-3 rounded-lg border">
+                        <label class="text-xs font-bold text-gray-500 block mb-1">PROMPT TEXT:</label>
+                        <p id="promptTextVal" class="text-sm font-mono text-gray-700">${item.prompt_text}</p>
+                        <button onclick="copyPrompt()" class="mt-2 bg-gray-800 text-white text-xs px-3 py-1.5 rounded hover:bg-black"><i class="fa-regular fa-copy"></i> Copy Prompt</button>
+                    </div>
+                `;
+            }
+
+            // Download Trigger with Ad Flow
+            modalHTML += `
+                <div class="mt-6">
+                    <button onclick="startAdDownload('${item.download_url}', ${item.ad_count})" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Download Freebie (${item.ad_count} Ad(s))
+                    </button>
+                </div>
+            `;
+
+            // Comments Section
+            modalHTML += `
+                <div class="mt-8 border-t pt-4">
+                    <h3 class="font-bold text-lg mb-3">Comments (No login required)</h3>
+                    <div class="space-y-3 max-h-40 overflow-y-auto mb-4" id="commentList">
+                        ${comments.length ? comments.map(c => `<div class="bg-gray-50 p-2.5 rounded text-sm"><strong>${c.name}:</strong>${c.text}</div>`).join('') : '<p class="text-xs text-gray-400">No comments yet.</p>'}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <input type="text" id="commentName" placeholder="Your Name" class="border px-3 py-2 rounded text-sm focus:outline-none">
+                        <textarea id="commentText" placeholder="Write a comment..." class="border px-3 py-2 rounded text-sm focus:outline-none" rows="2"></textarea>
+                        <button onclick="submitComment(${item.id})" class="bg-gray-800 text-white py-2 rounded text-sm font-semibold hover:bg-black">Post Comment</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modalContent').innerHTML = modalHTML;
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.getElementById('detailModal').classList.add('flex');
+        }
+
+        // Multi-Step Ad Viewer Handler
+        function startAdDownload(finalUrl, totalAds) {
+            let currentAd = 1;
+            
+            function showAdStep() {
+                if (currentAd <= totalAds) {
+                    // এখানে আপনার Adsterra বা Monetag ডিরেক্ট লিংক ওপেন করাতে পারেন
+                    window.open('https://www.example-adnetwork-link.com', '_blank');
+
+                    let adModalHtml = `
+                        <div class="text-center py-8">
+                            <h3 class="text-xl font-bold text-indigo-600 mb-2">Viewing Ad ${currentAd} of ${totalAds}</h3>
+                            <p class="text-gray-500 text-sm mb-6">Please complete viewing the ads to unlock your download link.</p>
+                            <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-6">
+                                <p class="text-sm font-semibold text-gray-700">[ Sponsor Advertisement Banner ]</p>
+                            </div>
+                            <button onclick="nextAdStep()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition">
+                                ${currentAd < totalAds ? 'Next Ad (' + (currentAd + 1) + '/' + totalAds + ')' : 'Get Download Link'}
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('modalContent').innerHTML = adModalHtml;
+                } else {
+                    // All ads watched, trigger file download
+                    closeModal();
+                    const a = document.createElement('a');
+                    a.href = finalUrl;
+                    a.download = '';
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            }
+
+            window.nextAdStep = function() {
+                currentAd++;
+                showAdStep();
+            };
+
+            showAdStep();
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('flex');
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // Admin Table & CRUD Operations
+        function renderAdminTable() {
+            const list = document.getElementById('adminPostList');
             list.innerHTML = '';
-            freebies.forEach(item => {
+            posts.forEach(item => {
                 list.innerHTML += `
                     <tr class="border-b text-sm">
                         <td class="p-3"><img src="${item.image}" class="w-12 h-12 object-cover rounded"></td>
                         <td class="p-3 font-semibold text-gray-800">${item.title}</td>
-                        <td class="p-3"><span class="bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded text-xs">${item.type}</span></td>
-                        <td class="p-3"><button onclick="deleteItem(${item.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button></td>
+                        <td class="p-3"><span class="bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded text-xs font-bold">${item.ad_count} Ads</span></td>
+                        <td class="p-3 flex gap-3 pt-5">
+                            <button onclick="editPost(${item.id})" class="text-blue-500 hover:text-blue-700"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deletePost(${item.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+                        </td>
                     </tr>
                 `;
             });
-            localStorage.setItem('fn_freebies', JSON.stringify(freebies));
         }
 
-        function addItem(e) {
+        async function handlePostSubmit(e) {
             e.preventDefault();
-            const newItem = {
-                id: Date.now(),
+            const id = document.getElementById('editPostId').value;
+            const postData = {
                 title: document.getElementById('itemTitle').value,
                 type: document.getElementById('itemType').value,
                 category: document.getElementById('itemCategory').value,
                 image: document.getElementById('itemImage').value,
                 description: document.getElementById('itemDesc').value,
                 promptText: document.getElementById('itemPromptText').value,
-                downloadUrl: document.getElementById('itemDownloadUrl').value
+                downloadUrl: document.getElementById('itemDownloadUrl').value,
+                adCount: parseInt(document.getElementById('itemAdCount').value) || 1
             };
-            freebies.unshift(newItem);
-            renderAdminList();
-            document.getElementById('addForm').reset();
-            alert('Item added successfully! Click "Export freebies.json" and upload to GitHub.');
-        }
 
-        function deleteItem(id) {
-            if(confirm('Are you sure you want to delete this item?')) {
-                freebies = freebies.filter(i => i.id !== id);
-                renderAdminList();
+            const url = id ? `${API_URL}/api/posts/${id}` : `${API_URL}/api/posts`;
+            const method = id ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(postData)
+            });
+
+            if(res.ok) {
+                alert(id ? 'Post updated successfully!' : 'Post published instantly!');
+                resetForm();
+                fetchPosts();
+            } else {
+                alert('Operation failed.');
             }
         }
 
-        function exportJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(freebies, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "freebies.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            alert('freebies.json downloaded! Upload this file to your GitHub repository to update the main site.');
+        function editPost(id) {
+            const item = posts.find(i => i.id === id);
+            document.getElementById('editPostId').value = item.id;
+            document.getElementById('itemTitle').value = item.title;
+            document.getElementById('itemType').value = item.type;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemImage').value = item.image;
+            document.getElementById('itemDesc').value = item.description;
+            document.getElementById('itemPromptText').value = item.prompt_text || '';
+            document.getElementById('itemDownloadUrl').value = item.download_url;
+            document.getElementById('itemAdCount').value = item.ad_count || 1;
+            
+            document.getElementById('formTitle').innerText = 'Edit Post';
+            document.getElementById('submitBtn').innerText = 'Update Post';
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
         }
+
+        function resetForm() {
+            document.getElementById('postForm').reset();
+            document.getElementById('editPostId').value = '';
+            document.getElementById('formTitle').innerText = 'Add New Post';
+            document.getElementById('submitBtn').innerText = 'Publish Instantly';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        async function deletePost(id) {
+            if(confirm('Are you sure you want to delete this post?')) {
+                const res = await fetch(`${API_URL}/api/posts/${id}`, { method: 'DELETE' });
+                if(res.ok) fetchPosts();
+            }
+        }
+
+        async function submitComment(postId) {
+            const name = document.getElementById('commentName').value.trim();
+            const text = document.getElementById('commentText').value.trim();
+            if(!name || !text) {
+                alert('Please enter your name and comment.');
+                return;
+            }
+            await fetch(`${API_URL}/api/comments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: postId, name, text })
+            });
+            openModal(postId);
+        }
+
+        function shareItem(title) {
+            if (navigator.share) {
+                navigator.share({ title: title, url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const keyword = e.target.value.toLowerCase();
+            const filtered = posts.filter(i => i.title.toLowerCase().includes(keyword) || i.description.toLowerCase().includes(keyword));
+            renderGrid(filtered);
+        });
+
+        fetchPosts();
     </script>
 </body>
 </html>
