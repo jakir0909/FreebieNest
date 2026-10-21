@@ -4,20 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <!-- 👇 এই লাইনটি Chrome-এর অটো-ট্রান্সলেট বন্ধ করবে -->
+  <!-- 👇 এই মেটা ট্যাগটি Chrome-এর অটো-ট্রান্সলেট বন্ধ করবে এবং removeChild এরর ঠিক করবে -->
   <meta name="google" content="notranslate" />
-  <title>Content Manager | Freebies Hub</title>
+  <title>Content Manager | FreebieNest</title>
 </head>
 <body>
-  <!-- Decap CMS Script -->
+  <!-- Decap CMS স্ক্রিপ্ট -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
 
-  <!-- Config inside HTML -->
+  <!-- সম্পূর্ণ কনফিগারেশন সরাসরি এখানে -->
   <script>
     window.CMS_MANUAL_INIT = true;
     const config = {
-      // 👇 এই লাইনটি যোগ করলে CMS আর config.yml ফাইল খুঁজবে না
-      load_config_file: false, 
+      // 👇 এই লাইনটি নিশ্চিত করবে যে CMS আর config.yml ফাইল খুঁজবে না
+      load_config_file: false,
       backend: {
         name: 'github',
         repo: 'jakir0909/FreebieNest',
@@ -65,7 +65,8 @@
         }
       ]
     };
-    
+
+    // CMS ইনিশিয়ালাইজ করুন
     const CMS = window.CMS || {};
     CMS.init({ config });
   </script>
