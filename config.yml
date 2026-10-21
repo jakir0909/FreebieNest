@@ -2,13 +2,13 @@ backend:
   name: github
   repo: jakir0909/FreebieNest          # 👈 ১. আপনার GitHub ইউজারনেম/রিপো
   branch: main                                        # 👈 ২. main না master চেক করুন
-  base_url: https://your-worker.workers.dev           # 👈 ৩. Cloudflare Worker URL
+  base_url: https://freebienest.pages.dev           # 👈 ৩. Cloudflare Worker URL
   # auth_endpoint: /auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-site_url: https://your-site.pages.dev                 # 👈 ৪. আপনার Cloudflare Pages URL
+site_url: https://freebienest.pages.dev              # 👈 ৪. আপনার Cloudflare Pages URL
 
 collections:
   - name: "planners"
