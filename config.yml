@@ -1,14 +1,13 @@
 backend:
   name: github
-  repo: jakir0909/FreebieNest          # 👈 ১. আপনার GitHub ইউজারনেম/রিপো
-  branch: main                                        # 👈 ২. main না master চেক করুন
-  base_url: https://freebienest.linkt.workers.dev           # 👈 ৩. Cloudflare Worker URL
-  # auth_endpoint: /auth
+  repo: jakir0909/FreebieNest
+  branch: main
+  base_url: https://freebienest.linkt.workers.dev
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-site_url: https://freebienest.pages.dev              # 👈 ৪. আপনার Cloudflare Pages URL
+site_url: https://freebienest.pages.dev
 
 collections:
   - name: "planners"
@@ -20,26 +19,10 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text", required: false }
-      - label: "Category"
-        name: "category"
-        widget: "select"
-        options:
-          - "Daily/Weekly"
-          - "Content Calendar"
-          - "Budget/Habit"
-          - "Freelance/Study"
-          - "Other"
+      - { label: "Category", name: "category", widget: "select", options: ["Daily/Weekly", "Content Calendar", "Budget/Habit", "Freelance/Study", "Other"] }
       - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
-      - label: "File Type"
-        name: "fileType"
-        widget: "select"
-        options:
-          - "PDF"
-          - "Notion Template"
-          - "Google Sheets"
-          - "Other"
-      - { label: "Download URL", name: "fileUrl", widget: "string",
-          hint: "R2 বা অন্য কোথাও হোস্ট করা ফাইলের লিংক" }
+      - { label: "File Type", name: "fileType", widget: "select", options: ["PDF", "Notion Template", "Google Sheets", "Other"] }
+      - { label: "Download URL", name: "fileUrl", widget: "string" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
       - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
 
@@ -52,20 +35,8 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text", required: false }
-      - label: "Category"
-        name: "category"
-        widget: "select"
-        options:
-          - "Content Writing"
-          - "Image/Midjourney"
-          - "Business"
-          - "Coding"
-          - "Study"
-          - "Other"
+      - { label: "Category", name: "category", widget: "select", options: ["Content Writing", "Image/Midjourney", "Business", "Coding", "Study", "Other"] }
       - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
-      - label: "Prompts"
-        name: "prompts"
-        widget: "list"
-        hint: "প্রতিটি প্রম্পট আলাদা আইটেম হিসেবে যোগ করুন"
+      - { label: "Prompts", name: "prompts", widget: "list" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
       - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
