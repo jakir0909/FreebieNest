@@ -23,10 +23,10 @@ collections:
       - { label: "Post Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Category", name: "category", widget: "select", options: ["Digital Planner", "AI Prompt", "Photo", "Other"] }
-      - { label: "Cover Image", name: "thumbnail", widget: "image", hint: "এখানে সরাসরি ছবি আপলোড করুন" }
+      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false, hint: "ছবি আপলোড করুন" }
       - label: "Ad Links (Multiple)"
         name: "adLinks"
         widget: "list"
         required: false
-        hint: "এখানে '+' বাটনে ক্লিক করে যত ইচ্ছে অ্যাড লিংক যোগ করুন"
-      - { label: "Content/Download Link (URL)", name: "contentLink", widget: "string", hint: "অ্যাড দেখার পর যে ফাইল ডাউনলোড হবে তার লিংক" }
+        hint: "এখানে '+' বাটনে ক্লিক করে একাধিক অ্যাড লিংক দিন। ডাউনলোডের সময় এগুলো একটার পর একটা ওপেন হবে।"
+      - { label: "Content/Download Link", name: "contentLink", widget: "string", hint: "সব অ্যাড দেখার পর যে ফাইলটি ডাউনলোড হবে তার লিংক" }
