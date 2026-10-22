@@ -22,6 +22,11 @@ collections:
     fields:
       - { label: "Post Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Image Link (URL)", name: "thumbnail", widget: "string", hint: "ছবির সরাসরি লিংক দিন" }
-      - { label: "Ad Link (URL)", name: "adLink", widget: "string", hint: "এখানে আপনার Adsterra বা Monetag এর লিংক দিন" }
+      - { label: "Category", name: "category", widget: "select", options: ["Digital Planner", "AI Prompt", "Photo", "Other"] }
+      - { label: "Cover Image", name: "thumbnail", widget: "image", hint: "এখানে সরাসরি ছবি আপলোড করুন" }
+      - label: "Ad Links (Multiple)"
+        name: "adLinks"
+        widget: "list"
+        required: false
+        hint: "এখানে '+' বাটনে ক্লিক করে যত ইচ্ছে অ্যাড লিংক যোগ করুন"
       - { label: "Content/Download Link (URL)", name: "contentLink", widget: "string", hint: "অ্যাড দেখার পর যে ফাইল ডাউনলোড হবে তার লিংক" }
