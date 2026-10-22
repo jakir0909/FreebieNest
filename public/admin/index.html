@@ -7,75 +7,31 @@
   <meta name="google" content="notranslate" />
   <title>Admin Panel | FreebieNest</title>
   <style>
-  /* অ্যাপের থিম কালার ও ফন্ট */
-  body, button, input, select, textarea {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-  }
-  
-  /* হেডার কালার */
-  [class*="AppHeader"] {
-    background-color: #4F46E5 !important;
-  }
-  
-  /* ডানদিকের কালেকশন মেনু */
-  [class*="Sidebar"] {
-    background-color: #ffffff !important;
-    border-right: 1px solid #e5e7eb !important;
-  }
-
-  /* সবুজ রঙের 'New' বাটন */
-  [class*="Toolbar"] a, [class*="Toolbar"] button {
-    background-color: #4F46E5 !important;
-    color: white !important;
-    border: none !important;
-  }
-
-  /* ফর্মের বক্সগুলো সুন্দর করা */
-  input, textarea, select {
-    border-radius: 8px !important;
-    border: 1px solid #d1d5db !important;
-    padding: 10px !important;
-  }
-  
-  /* Go to App বাটনটি আরও সুন্দর করা */
-  .app-home-btn {
-    bottom: 20px !important;
-    right: 20px !important;
-    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.5) !important;
-  }
-</style>
+    body, button, input, select, textarea {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    [class*="AppHeader"] { background-color: #4F46E5 !important; }
+    [class*="Sidebar"] { background-color: #ffffff !important; border-right: 1px solid #e5e7eb !important; }
+    [class*="Toolbar"] a, [class*="Toolbar"] button { background-color: #4F46E5 !important; color: white !important; border: none !important; }
+    input, textarea, select { border-radius: 8px !important; border: 1px solid #d1d5db !important; padding: 10px !important; }
+    
+    .app-home-btn {
+      position: fixed; bottom: 20px; right: 20px;
+      background-color: #4F46E5; color: white !important;
+      padding: 12px 20px; border-radius: 50px;
+      font-weight: bold; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.5);
+      z-index: 99999; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; transition: transform 0.2s;
+    }
+    .app-home-btn:hover { transform: scale(1.05); background-color: #4338CA; }
+  </style>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
-  <!-- 👇 অ্যাপে ফিরে যাওয়ার ফ্লোটিং বাটন 👇 -->
-<style>
-  .app-home-btn {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background-color: #4F46E5; /* অ্যাপের থিম কালার */
-    color: white !important;
-    padding: 12px 20px;
-    border-radius: 50px;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-    z-index: 99999;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 14px;
-    transition: transform 0.2s;
-  }
-  .app-home-btn:hover {
-    transform: scale(1.05);
-    background-color: #4338CA;
-  }
-</style>
-<a href="https://freebienest.pages.dev" class="app-home-btn">
-  <span style="font-size: 18px;">🏠</span> Go to App
-</a>
-<!-- 👆 --------------------------------- 👆 -->
+  
+  <a href="https://freebienest.pages.dev" class="app-home-btn">
+    <span style="font-size: 18px;">🏠</span> Go to App
+  </a>
 </body>
 </html>
