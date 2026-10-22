@@ -29,4 +29,4 @@ collections:
         widget: "list"
         required: false
         hint: "এখানে '+' বাটনে ক্লিক করে একাধিক অ্যাড লিংক দিন। ডাউনলোডের সময় এগুলো একটার পর একটা ওপেন হবে।"
-      - { label: "Content/Download Link", name: "contentLink", widget: "string", hint: "সব অ্যাড দেখার পর যে ফাইলটি ডাউনলোড হবে তার লিংক" }
+      - { label: "Content/Download Link", name: "contentLink", widget: "file", hint: "সব অ্যাড দেখার পর যে ফাইলটি ডাউনলোড হবে তার লিংক" }
