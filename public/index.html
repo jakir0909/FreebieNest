@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -18,6 +17,8 @@
                 <i class="fa-solid fa-box-archive"></i> FreebieNest
             </a>
             <div class="flex items-center gap-3">
+                <span class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-lg font-bold hidden sm:block"><i class="fa-solid fa-bolt"></i> 100% Free</span>
+                <!-- 👇 অ্যাডমিন পোস্ট বাটন 👇 -->
                 <a href="/admin/" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-indigo-700 transition">
                     <i class="fa-solid fa-plus"></i> Post
                 </a>
@@ -30,7 +31,7 @@
         <div class="max-w-3xl mx-auto">
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Download Premium Freebies</h1>
             <p class="text-indigo-100 text-lg mb-6">AI Prompts & Planners without login.</p>
-            <input type="text" id="searchInput" placeholder="Search..." class="px-4 py-3 rounded-lg text-gray-800 w-full sm:w-96 focus:outline-none shadow-md">
+            <input type="text" id="searchInput" placeholder="Search prompts, planners..." class="px-4 py-3 rounded-lg text-gray-800 w-full sm:w-96 focus:outline-none shadow-md">
         </div>
     </section>
 
@@ -49,6 +50,10 @@
         </div>
     </div>
 
+    <footer class="bg-white border-t py-6 text-center text-gray-500 text-sm mt-10">
+        &copy; 2026 FreebieNest. Powered by Cloudflare & GitHub.
+    </footer>
+
     <script>
         const API_URL = 'https://freebienest-api.linkt.workers.dev'; 
         let posts = [];
@@ -59,7 +64,7 @@
                 posts = await res.json();
                 renderGrid(posts);
             } catch(e) {
-                document.getElementById('freebieGrid').innerHTML = '<p class="col-span-3 text-center text-red-500 py-10">Error loading data.</p>';
+                document.getElementById('freebieGrid').innerHTML = '<p class="col-span-3 text-center text-red-500 py-10">Error loading data. Check API Worker.</p>';
             }
         }
 
@@ -74,7 +79,7 @@
                 grid.innerHTML += `
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition flex flex-col justify-between">
                         <div>
-                            <img src="${item.image}" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
+                            <img src="${item.image}" class="w-full h-48 object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
                             <div class="p-4">
                                 <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-medium">${item.category}</span>
                                 <h3 class="font-bold text-lg text-gray-800 mt-2 line-clamp-1">${item.title}</h3>
@@ -82,7 +87,7 @@
                             </div>
                         </div>
                         <div class="p-4 pt-3 border-t border-gray-100">
-                            <button onclick="openModal(${item.id})" class="w-full bg-indigo-50 text-indigo-600 font-bold py-2 rounded-lg hover:bg-indigo-100">Download Now</button>
+                            <button onclick="openModal(${item.id})" class="w-full bg-indigo-50 text-indigo-600 font-bold py-2 rounded-lg hover:bg-indigo-100 transition">Download Now</button>
                         </div>
                     </div>
                 `;
@@ -108,7 +113,7 @@
             document.getElementById('detailModal').classList.add('flex');
         }
 
-        // একাধিক অ্যাড লিংক দেখানোর সিস্টেম
+        // মাল্টি-অ্যাড ডাউনলোড সিস্টেম
         function startAdDownload(id) {
             const item = posts.find(i => i.id === id);
             let ads = item.adLinks && item.adLinks.length > 0 ? item.adLinks : ['https://example.com'];
@@ -123,7 +128,7 @@
                         <div class="text-center py-6">
                             <h3 class="text-xl font-bold mb-2">Step ${currentAdIndex + 1} of ${ads.length}</h3>
                             <p class="text-gray-500 mb-6">Please wait while we prepare your download.</p>
-                            <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed">
+                            <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed border-gray-300">
                                 [ Sponsor Ad Space ]
                             </div>
                             <button id="nextAdBtn" class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed" disabled>
@@ -167,7 +172,7 @@
 
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const keyword = e.target.value.toLowerCase();
-            const filtered = posts.filter(i => i.title.toLowerCase().includes(keyword));
+            const filtered = posts.filter(i => i.title.toLowerCase().includes(keyword) || i.description.toLowerCase().includes(keyword));
             renderGrid(filtered);
         });
 
