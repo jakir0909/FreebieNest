@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -17,7 +18,6 @@
                 <i class="fa-solid fa-box-archive"></i> FreebieNest
             </a>
             <div class="flex items-center gap-3">
-                <!-- 👇 পোস্ট বাটন যা সরাসরি অ্যাডমিন প্যানেলে নিয়ে যাবে 👇 -->
                 <a href="/admin/" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-indigo-700 transition">
                     <i class="fa-solid fa-plus"></i> Post
                 </a>
@@ -76,7 +76,8 @@
                         <div>
                             <img src="${item.image}" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
                             <div class="p-4">
-                                <h3 class="font-bold text-lg text-gray-800 line-clamp-1">${item.title}</h3>
+                                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-medium">${item.category}</span>
+                                <h3 class="font-bold text-lg text-gray-800 mt-2 line-clamp-1">${item.title}</h3>
                                 <p class="text-gray-500 text-sm mt-1 line-clamp-2">${item.description}</p>
                             </div>
                         </div>
@@ -92,14 +93,14 @@
             const item = posts.find(i => i.id === id);
             let modalHTML = `
                 <img src="${item.image}" class="w-full h-56 object-cover rounded-lg mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">${item.title}</h2>
+                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-bold uppercase">${item.category}</span>
+                <h2 class="text-2xl font-bold text-gray-800 mt-2">${item.title}</h2>
                 <p class="text-gray-600 mt-2 mb-6">${item.description}</p>
                 
                 <div class="border-t pt-6 text-center">
-                    <button onclick="startAdDownload('${item.adLink}', '${item.contentLink}')" class="w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition flex justify-center items-center gap-2 shadow-lg text-lg">
+                    <button onclick="startAdDownload(${item.id})" class="w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition flex justify-center items-center gap-2 shadow-lg text-lg">
                         <i class="fa-solid fa-download"></i> Download File
                     </button>
-                    <p class="text-xs text-gray-400 mt-2">(Clicking will open a sponsor link first, then start download)</p>
                 </div>
             `;
             document.getElementById('modalContent').innerHTML = modalHTML;
@@ -107,41 +108,56 @@
             document.getElementById('detailModal').classList.add('flex');
         }
 
-        function startAdDownload(adLink, contentLink) {
-            // ১. নতুন ট্যাবে আপনার অ্যাড লিংক ওপেন হবে
-            window.open(adLink, '_blank');
+        // একাধিক অ্যাড লিংক দেখানোর সিস্টেম
+        function startAdDownload(id) {
+            const item = posts.find(i => i.id === id);
+            let ads = item.adLinks && item.adLinks.length > 0 ? item.adLinks : ['https://example.com'];
+            let currentAdIndex = 0;
 
-            // ২. পপআপে ৫ সেকেন্ড টাইমার দেখাবে
-            let timerHtml = `
-                <div class="text-center py-10">
-                    <h3 class="text-xl font-bold mb-2">Generating Link...</h3>
-                    <p class="text-gray-500 mb-6">Please wait while we prepare your file.</p>
-                    <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed">
-                        [ Ad Space ]
-                    </div>
-                    <button id="dlBtn" class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed" disabled>
-                        Wait... <span id="countdown" class="font-bold">5</span>s
-                    </button>
-                </div>
-            `;
-            document.getElementById('modalContent').innerHTML = timerHtml;
+            function showAdStep() {
+                if (currentAdIndex < ads.length) {
+                    // নতুন ট্যাবে অ্যাড ওপেন হবে
+                    window.open(ads[currentAdIndex], '_blank');
 
-            // ৩. টাইমার শেষ হলে ডাউনলোড বাটন অ্যাক্টিভ হবে
-            let timeLeft = 5;
-            const timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('countdown').innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    const btn = document.getElementById('dlBtn');
-                    btn.disabled = false;
-                    btn.className = "w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg text-lg";
-                    btn.innerHTML = '<i class="fa-solid fa-download"></i> Click to Download';
-                    btn.onclick = function() { 
-                        window.open(contentLink, '_blank'); // আসল ডাউনলোড লিংক
-                    };
-                }
-            }, 1000);
+                    let timerHtml = `
+                        <div class="text-center py-6">
+                            <h3 class="text-xl font-bold mb-2">Step ${currentAdIndex + 1} of ${ads.length}</h3>
+                            <p class="text-gray-500 mb-6">Please wait while we prepare your download.</p>
+                            <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed">
+                                [ Sponsor Ad Space ]
+                            </div>
+                            <button id="nextAdBtn" class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed" disabled>
+                                Please Wait... <span id="countdown" class="font-bold text-indigo-600">5</span>s
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('modalContent').innerHTML = timerHtml;
+
+                    let timeLeft = 5;
+                    const timer = setInterval(() => {
+                        timeLeft--;
+                        document.getElementById('countdown').innerText = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(timer);
+                            const btn = document.getElementById('nextAdBtn');
+                            btn.disabled = false;
+                            if (currentAdIndex < ads.length - 1) {
+                                btn.className = "w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg";
+                                btn.innerHTML = `Next Ad (${currentAdIndex + 2}/${ads.length})`;
+                                btn.onclick = function() { currentAdIndex++; showAdStep(); };
+                            } else {
+                                btn.className = "w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg";
+                                btn.innerHTML = '<i class="fa-solid fa-download"></i> Get Download Link';
+                                btn.onclick = function() { 
+                                    window.open(item.contentLink, '_blank'); 
+                                    closeModal();
+                                };
+                            }
+                        }
+                    }, 1000);
+                } 
+            }
+            showAdStep();
         }
 
         function closeModal() {
