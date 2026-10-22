@@ -13,8 +13,7 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 site_url: https://freebienest.pages.dev
-
-collections:
+ collections:
   - name: "planners"
     label: "📋 Digital Planners"
     label_singular: "Planner"
@@ -22,14 +21,12 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Title", name: "title", widget: "string", hint: "প্ল্যানারের নাম লিখুন (যেমন: Daily Planner 2026)" }
+      - { label: "Description", name: "description", widget: "text", required: false, hint: "সংক্ষেপে বিবরণ দিন" }
       - { label: "Category", name: "category", widget: "select", options: ["Daily/Weekly", "Content Calendar", "Budget/Habit", "Freelance/Study", "Other"] }
-      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
-      - { label: "File Type", name: "fileType", widget: "select", options: ["PDF", "Notion Template", "Google Sheets", "Other"] }
-      - { label: "Download URL", name: "fileUrl", widget: "string" }
+      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false, hint: "ছবির সরাসরি লিংক (URL) এখানে দিন" }
+      - { label: "Download URL", name: "fileUrl", widget: "string", hint: "ফাইল ডাউনলোডের সরাসরি লিংক (যেমন: Telegram বা Google Drive)" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
 
   - name: "prompts"
     label: "🤖 AI Prompt Packs"
@@ -38,10 +35,9 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Title", name: "title", widget: "string", hint: "প্রম্পটের নাম (যেমন: Midjourney Landscape Prompts)" }
       - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Category", name: "category", widget: "select", options: ["Content Writing", "Image/Midjourney", "Business", "Coding", "Study", "Other"] }
-      - { label: "Cover Image", name: "thumbnail", widget: "image", required: false }
-      - { label: "Prompts", name: "prompts", widget: "list" }
+      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false, hint: "ছবির সরাসরি লিংক (URL)" }
+      - { label: "Prompts", name: "prompts", widget: "list", hint: "একাধিক প্রম্পট যোগ করতে '+' বাটনে ক্লিক করুন" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Body (Optional)", name: "body", widget: "markdown", required: false }
