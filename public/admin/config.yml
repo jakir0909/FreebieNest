@@ -1,4 +1,3 @@
-
 backend:
   name: git-gateway
   repo: jakir0909/FreebieNest
@@ -11,33 +10,33 @@ backend:
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
-
 site_url: https://freebienest.pages.dev
- collections:
+
+collections:
   - name: "planners"
-    label: "📋 Digital Planners"
+    label: "Digital Planners"
     label_singular: "Planner"
     folder: "src/content/planners"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string", hint: "প্ল্যানারের নাম লিখুন (যেমন: Daily Planner 2026)" }
-      - { label: "Description", name: "description", widget: "text", required: false, hint: "সংক্ষেপে বিবরণ দিন" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Category", name: "category", widget: "select", options: ["Daily/Weekly", "Content Calendar", "Budget/Habit", "Freelance/Study", "Other"] }
-      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false, hint: "ছবির সরাসরি লিংক (URL) এখানে দিন" }
-      - { label: "Download URL", name: "fileUrl", widget: "string", hint: "ফাইল ডাউনলোডের সরাসরি লিংক (যেমন: Telegram বা Google Drive)" }
+      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false }
+      - { label: "Download URL", name: "fileUrl", widget: "string" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
 
   - name: "prompts"
-    label: "🤖 AI Prompt Packs"
+    label: "AI Prompt Packs"
     label_singular: "Prompt Pack"
     folder: "src/content/prompts"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string", hint: "প্রম্পটের নাম (যেমন: Midjourney Landscape Prompts)" }
+      - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Category", name: "category", widget: "select", options: ["Content Writing", "Image/Midjourney", "Business", "Coding", "Study", "Other"] }
-      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false, hint: "ছবির সরাসরি লিংক (URL)" }
-      - { label: "Prompts", name: "prompts", widget: "list", hint: "একাধিক প্রম্পট যোগ করতে '+' বাটনে ক্লিক করুন" }
+      - { label: "Cover Image Link", name: "thumbnail", widget: "string", required: false }
+      - { label: "Prompts", name: "prompts", widget: "list" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
