@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreebieNest - Free Photos & AI Prompts</title>
+    <title>FreebieNest</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="google" content="notranslate" />
@@ -17,13 +16,11 @@
             <a href="#" class="text-2xl font-black text-indigo-600 flex items-center gap-2">
                 <i class="fa-solid fa-box-archive"></i> FreebieNest
             </a>
-            <div class="flex items-center gap-2">
-                <span class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-bolt"></i> 100% Free</span>
-                <!-- 👇 অ্যাডমিন প্যানেলের লিংক 👇 -->
-<a href="/admin/" title="Admin Panel" class="text-gray-400 hover:text-indigo-600 transition">
-    <i class="fa-solid fa-user-shield text-lg"></i>
-</a>
-<!-- 👆 --------------------------------- 👆 -->
+            <div class="flex items-center gap-3">
+                <!-- 👇 পোস্ট বাটন যা সরাসরি অ্যাডমিন প্যানেলে নিয়ে যাবে 👇 -->
+                <a href="/admin/" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-indigo-700 transition">
+                    <i class="fa-solid fa-plus"></i> Post
+                </a>
             </div>
         </div>
     </header>
@@ -33,18 +30,18 @@
         <div class="max-w-3xl mx-auto">
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Download Premium Freebies</h1>
             <p class="text-indigo-100 text-lg mb-6">AI Prompts & Planners without login.</p>
-            <input type="text" id="searchInput" placeholder="Search prompts..." class="px-4 py-3 rounded-lg text-gray-800 w-full sm:w-96 focus:outline-none shadow-md">
+            <input type="text" id="searchInput" placeholder="Search..." class="px-4 py-3 rounded-lg text-gray-800 w-full sm:w-96 focus:outline-none shadow-md">
         </div>
     </section>
 
-    <!-- Main Content Grid -->
+    <!-- Main Grid -->
     <main class="max-w-7xl mx-auto px-4 py-10">
         <div id="freebieGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div class="col-span-3 text-center py-10"><i class="fa-solid fa-spinner fa-spin text-4xl text-indigo-500"></i></div>
         </div>
     </main>
 
-    <!-- Modal for Details & Ad Download -->
+    <!-- Modal -->
     <div id="detailModal" class="fixed inset-0 bg-black/70 hidden justify-center items-center z-50 p-4 overflow-y-auto">
         <div class="bg-white rounded-xl max-w-2xl w-full my-8 relative shadow-2xl">
             <button onclick="closeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 w-8 h-8 rounded-full z-10"><i class="fa-solid fa-xmark"></i></button>
@@ -52,13 +49,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t py-6 text-center text-gray-500 text-sm mt-10">
-        &copy; 2026 FreebieNest. Powered by GitHub & Cloudflare.
-    </footer>
-
     <script>
-        // 👇 এখানে আপনার API Worker এর লিংক বসান (যেমন: https://freebienest-api.your-subdomain.workers.dev)
         const API_URL = 'https://freebienest-api.linkt.workers.dev'; 
         let posts = [];
 
@@ -68,7 +59,7 @@
                 posts = await res.json();
                 renderGrid(posts);
             } catch(e) {
-                document.getElementById('freebieGrid').innerHTML = '<p class="col-span-3 text-center text-red-500 py-10">Error loading data. Check API URL.</p>';
+                document.getElementById('freebieGrid').innerHTML = '<p class="col-span-3 text-center text-red-500 py-10">Error loading data.</p>';
             }
         }
 
@@ -76,23 +67,21 @@
             const grid = document.getElementById('freebieGrid');
             grid.innerHTML = '';
             if(!items.length) {
-                grid.innerHTML = '<p class="col-span-3 text-center text-gray-500 py-10">No freebies found.</p>';
+                grid.innerHTML = '<p class="col-span-3 text-center text-gray-500 py-10">No posts found. Click "+ Post" to add one.</p>';
                 return;
             }
             items.forEach(item => {
                 grid.innerHTML += `
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition flex flex-col justify-between">
                         <div>
-                            <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
+                            <img src="${item.image}" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
                             <div class="p-4">
-                                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-medium">${item.category}</span>
-                                <h3 class="font-bold text-lg mt-2 text-gray-800 line-clamp-1">${item.title}</h3>
-                                <p class="text-gray-500 text-sm mt-1 line-clamp-2">${item.description || 'No description available.'}</p>
+                                <h3 class="font-bold text-lg text-gray-800 line-clamp-1">${item.title}</h3>
+                                <p class="text-gray-500 text-sm mt-1 line-clamp-2">${item.description}</p>
                             </div>
                         </div>
-                        <div class="p-4 pt-3 flex justify-between items-center border-t border-gray-100">
-                            <button onclick="openModal(${item.id})" class="text-indigo-600 font-semibold text-sm hover:underline">View & Download</button>
-                            <button onclick="shareItem('${item.title}')" class="text-gray-400 hover:text-indigo-600"><i class="fa-solid fa-share-nodes"></i></button>
+                        <div class="p-4 pt-3 border-t border-gray-100">
+                            <button onclick="openModal(${item.id})" class="w-full bg-indigo-50 text-indigo-600 font-bold py-2 rounded-lg hover:bg-indigo-100">Download Now</button>
                         </div>
                     </div>
                 `;
@@ -102,72 +91,55 @@
         function openModal(id) {
             const item = posts.find(i => i.id === id);
             let modalHTML = `
-                <img src="${item.image}" class="w-full h-56 object-cover rounded-lg mb-4" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80'">
-                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-bold uppercase">${item.category}</span>
-                <h2 class="text-2xl font-bold mt-2 text-gray-800">${item.title}</h2>
-                <p class="text-gray-600 mt-2">${item.description || ''}</p>
-            `;
-
-            if(item.promptText) {
-                modalHTML += `
-                    <div class="mt-4 bg-gray-100 p-4 rounded-lg border border-gray-200">
-                        <label class="text-xs font-bold text-gray-500 block mb-2"><i class="fa-solid fa-robot"></i> COPY AI PROMPT:</label>
-                        <p id="promptTextVal" class="text-sm font-mono text-gray-800 whitespace-pre-wrap max-h-40 overflow-y-auto">${item.promptText}</p>
-                        <button onclick="copyPrompt()" class="mt-3 bg-gray-800 text-white text-xs px-4 py-2 rounded hover:bg-black transition w-full sm:w-auto"><i class="fa-regular fa-copy"></i> Copy to Clipboard</button>
-                    </div>
-                `;
-            }
-
-            // Multi-Step Ad Download Button
-            modalHTML += `
-                <div class="mt-8 border-t pt-6">
-                    <button onclick="startAdDownload('${item.downloadUrl}')" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2 shadow-lg">
-                        <i class="fa-solid fa-download"></i> Download Freebie (Ad Supported)
+                <img src="${item.image}" class="w-full h-56 object-cover rounded-lg mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">${item.title}</h2>
+                <p class="text-gray-600 mt-2 mb-6">${item.description}</p>
+                
+                <div class="border-t pt-6 text-center">
+                    <button onclick="startAdDownload('${item.adLink}', '${item.contentLink}')" class="w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition flex justify-center items-center gap-2 shadow-lg text-lg">
+                        <i class="fa-solid fa-download"></i> Download File
                     </button>
+                    <p class="text-xs text-gray-400 mt-2">(Clicking will open a sponsor link first, then start download)</p>
                 </div>
             `;
-
             document.getElementById('modalContent').innerHTML = modalHTML;
             document.getElementById('detailModal').classList.remove('hidden');
             document.getElementById('detailModal').classList.add('flex');
         }
 
-        // অ্যাড দেখে ডাউনলোড করার ফ্লো (৫ সেকেন্ডের টাইমার)
-        function startAdDownload(finalUrl) {
-            let adModalHtml = `
-                <div class="text-center py-6">
-                    <div class="text-5xl text-indigo-500 mb-4"><i class="fa-solid fa-gift animate-bounce"></i></div>
-                    <h3 class="text-xl font-bold mb-2">Generating Download Link</h3>
-                    <p class="text-gray-500 text-sm mb-6">Please wait a few seconds while we prepare your file.</p>
-                    
-                    <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed border-gray-300 text-center text-xs text-gray-400">
-                        [ Sponsor Advertisement Space ]<br>
-                        (এখানে আপনার Adsterra বা Monetag এর বিজ্ঞাপন লোড হবে)
-                    </div>
+        function startAdDownload(adLink, contentLink) {
+            // ১. নতুন ট্যাবে আপনার অ্যাড লিংক ওপেন হবে
+            window.open(adLink, '_blank');
 
-                    <button id="downloadBtn" class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed transition" disabled>
-                        Please wait... <span id="countdown" class="text-indigo-600 font-extrabold">5</span>s
+            // ২. পপআপে ৫ সেকেন্ড টাইমার দেখাবে
+            let timerHtml = `
+                <div class="text-center py-10">
+                    <h3 class="text-xl font-bold mb-2">Generating Link...</h3>
+                    <p class="text-gray-500 mb-6">Please wait while we prepare your file.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-dashed">
+                        [ Ad Space ]
+                    </div>
+                    <button id="dlBtn" class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed" disabled>
+                        Wait... <span id="countdown" class="font-bold">5</span>s
                     </button>
                 </div>
             `;
-            document.getElementById('modalContent').innerHTML = adModalHtml;
+            document.getElementById('modalContent').innerHTML = timerHtml;
 
-            // ⚠️ এখানে আপনার অ্যাড নেটওয়ার্কের ডিরেক্ট লিংক দিতে পারেন। 
-            // বাটনে ক্লিক করলেই নতুন ট্যাবে অ্যাড ওপেন হবে (Pop-under)
-            // window.open('https://your-ad-link.com', '_blank'); 
-
+            // ৩. টাইমার শেষ হলে ডাউনলোড বাটন অ্যাক্টিভ হবে
             let timeLeft = 5;
             const timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('countdown').innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    const btn = document.getElementById('downloadBtn');
+                    const btn = document.getElementById('dlBtn');
                     btn.disabled = false;
-                    btn.className = "w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg flex justify-center items-center gap-2 animate-pulse";
-                    btn.innerHTML = '<i class="fa-solid fa-download"></i> Download Now';
-                    // বাটনে ক্লিক করলে ফাইল ডাউনলোড হবে
-                    btn.onclick = function() { window.open(finalUrl, '_blank'); };
+                    btn.className = "w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg text-lg";
+                    btn.innerHTML = '<i class="fa-solid fa-download"></i> Click to Download';
+                    btn.onclick = function() { 
+                        window.open(contentLink, '_blank'); // আসল ডাউনলোড লিংক
+                    };
                 }
             }, 1000);
         }
@@ -177,29 +149,12 @@
             document.getElementById('detailModal').classList.add('hidden');
         }
 
-        function copyPrompt() {
-            const text = document.getElementById('promptTextVal').innerText;
-            navigator.clipboard.writeText(text);
-            alert('Prompt copied to clipboard!');
-        }
-
-        function shareItem(title) {
-            if (navigator.share) {
-                navigator.share({ title: title, url: window.location.href });
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Link copied to clipboard!');
-            }
-        }
-
-        // লাইভ সার্চ
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const keyword = e.target.value.toLowerCase();
-            const filtered = posts.filter(i => i.title.toLowerCase().includes(keyword) || (i.description && i.description.toLowerCase().includes(keyword)));
+            const filtered = posts.filter(i => i.title.toLowerCase().includes(keyword));
             renderGrid(filtered);
         });
 
-        // অ্যাপ চালু
         fetchPosts();
     </script>
 </body>
