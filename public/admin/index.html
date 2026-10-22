@@ -9,5 +9,35 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
+  <!-- 👇 অ্যাপে ফিরে যাওয়ার ফ্লোটিং বাটন 👇 -->
+<style>
+  .app-home-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #4F46E5; /* অ্যাপের থিম কালার */
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    z-index: 99999;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .app-home-btn:hover {
+    transform: scale(1.05);
+    background-color: #4338CA;
+  }
+</style>
+<a href="https://freebienest.pages.dev" class="app-home-btn">
+  <span style="font-size: 18px;">🏠</span> Go to App
+</a>
+<!-- 👆 --------------------------------- 👆 -->
 </body>
 </html>
